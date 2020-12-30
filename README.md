@@ -15,6 +15,6 @@ Homeassistant basic configuration: [home_assistant_wiegand](https://github.com/G
 
 ## How it works
 
-<img src="https://github.com/Gio-dot/Esphome-Wiegand-reader/blob/main/img/Wemos%20D1%20wiegand%20ingresso_bb_new.png" width="900">
+<img src="https://github.com/Gio-dot/Esphome-Wiegand-reader/blob/main/img/Wemos%20D1%20wiegand%20ingresso_bb.png" width="900">
 When tag is read, Arduino device sent it through serial to Esphome device (only TX is needed because communication is unidirectional). In Esphome i used uart text sensor component to read the code and send it to Homeassistant. In Home assistant i create binary sensors (one for each tag code that i'm using); then i use this binary sensors to fire various automations (door, alarm, external light, Wiegand reader led, Wiegand reader beep etc.)
 
