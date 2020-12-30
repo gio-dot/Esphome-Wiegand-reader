@@ -8,7 +8,5 @@ Use this yaml code to create your ESPHome firmware [sonoff_pow_r2_w_machine.yaml
 ## How it works
 
 <img src="https://github.com/Gio-dot/Esphome-Wiegand-reader/blob/main/img/Wemos%20D1%20wiegand%20ingresso_bb_new.png" width="900">
-This image show Home assitant card from Sonoff Pow. Washing phases are shown in sequence from bottom to top. At the end of the cycle all phases (except RUN) remains lighted. At next cycle start they are resetted.
-Sonoff Pow blue Led is lighted when a cycle is running and turned off at the cycle end.
-
+When tag is read, Arduino device sent it through serial to Esphome device (only TX is needed because communication is unidirectional). In Esphome i used uart text sensor component to read the code and send it to Homeassistant. In Home assistant i create binary sensors (one for each tag code that i'm using); then i use this binary sensors to fire various automations (door, alarm, external light, Wiegand reader led, Wiegand reader beep etc.)
 
