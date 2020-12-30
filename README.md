@@ -5,7 +5,7 @@ I use Esphome to integrate many devices in my Homeassistant hub. Some time ago i
 
 Use this yaml code to create your ESPHome firmware: [wemos_d1_wiegand_ingresso.yaml](https://github.com/Gio-dot/Esphome-Wiegand-reader/blob/main/wemos_d1_wiegand_ingresso.yaml)
 
-This is the Homeassistant configuration: [home_assistant_wiegand](https://github.com/Gio-dot/Esphome-Wiegand-reader/blob/main/home_assistant_wiegand.yaml)
+This is the Homeassistant basic configuration: [home_assistant_wiegand](https://github.com/Gio-dot/Esphome-Wiegand-reader/blob/main/home_assistant_wiegand.yaml)
 
 ## How it works
 
