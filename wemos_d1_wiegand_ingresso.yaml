@@ -1,0 +1,159 @@
+###############################################
+#  
+#    Wiegand reader using arduino
+#
+###############################################
+
+esphome:
+  name: wemos_d1_wiegand_ingresso
+  platform: ESP8266
+  board: d1_mini
+  includes:
+    - UartReadLineStateComponent.h
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_pw
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Arduino Port Exp"
+    password: "HUgZqpqqfamg"
+
+captive_portal:
+
+# Enable logging
+logger:
+  level: DEBUG
+  baud_rate: 0 # MESSO A 0 disable logger UART (to use serial)
+
+# Enable Home Assistant API
+api:
+
+ota:
+  
+uart: 
+  rx_pin: GPIO3 
+  tx_pin: GPIO1 
+  baud_rate: 115200
+  stop_bits: 1
+  id: uart_bus
+      
+text_sensor:
+    - platform: custom
+      lambda: |-
+        auto my_custom_sensor = new UartReadLineStateComponent(id(uart_bus));
+        App.register_component(my_custom_sensor);
+        return {my_custom_sensor};
+      text_sensors:
+        name: "UART Text Sensor Wemos portone"      
+  
+sensor:
+  - platform: wifi_signal
+    name: "Wemos portone WiFi"
+    update_interval: 60s
+  - platform: uptime
+    name: "Wemos portone uptime" 
+
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: D5
+      mode: INPUT_PULLUP
+      inverted: True
+    name: "Pulsante luce portone"
+    filters:
+      - delayed_off: 100ms
+    on_press:
+      - light.toggle: rele_luce_portone    
+  - platform: gpio
+    pin:
+      number: D6
+      mode: INPUT_PULLUP
+      inverted: True
+    name: "Pulsante portone"
+    on_press:
+      - switch.turn_on: rele_porta   
+
+switch:
+  - platform: restart
+    name: Wemos portone restart   
+
+  - platform: gpio
+    pin: D8
+    name: "Portone_Seve"
+    icon: "mdi:door-closed-lock" # icona che compare in home assistant
+    id: rele_porta
+    restore_mode: ALWAYS_OFF
+    on_turn_on: 
+       then:
+         - light.turn_on: led_rele 
+         - delay: 600ms # funzionamento rele (commentato= normale/decommentato= temporizzato)
+         - switch.turn_off: rele_porta # funzionamento rele (commentato= normale/decommentato= temporizzato)
+    on_turn_off: 
+       then:
+         - light.turn_off: led_rele 
+  
+  - platform: gpio
+    id: wiegand_led
+    pin: D1
+    name: "Portone Seve Wiegand led"
+    icon: "mdi:led-on"
+
+  - platform: gpio
+    id: beep
+    pin: D2
+    inverted: yes
+
+  - platform: template ############# long beep
+    name: "Portone Seve Wiegand long beep"
+    icon: "mdi:bell-alert" # ...
+    id: long_beep
+    turn_on_action:
+      - switch.turn_on: beep
+      - delay: 1200ms # ...
+      - switch.turn_off: beep
+      - switch.turn_off: long_beep # ...
+  - platform: template ############# two beep
+    name: "Portone Seve Wiegand two beep"
+    icon: "mdi:bell-alert-outline" # ...
+    id: two_beep
+    turn_on_action:
+      - switch.turn_on: beep
+      - delay: 350ms # ...
+      - switch.turn_off: beep
+      - delay: 350ms # ...
+      - switch.turn_on: beep
+      - delay: 350ms # ...
+      - switch.turn_off: beep
+      - switch.turn_off: two_beep # ...                   
+
+output:
+  - platform: gpio
+    pin: D7
+    id: rele_luce
+  # Register the LED as a dimmable output ....
+  - platform: esp8266_pwm
+    id: led
+    pin:
+      number: D4
+      inverted: True
+
+light:
+  - platform: binary
+    name: "Luce_portone_Seve"
+    id: rele_luce_portone
+    output: rele_luce
+    on_turn_on: 
+      then:
+        - light.turn_on: led_rele 
+    on_turn_off: 
+       then:
+         - light.turn_off: led_rele   
+  # ... and then make a light out of it.
+  - platform: monochromatic
+    id: led_rele
+    name: "Led"
+    internal: true  # internal true= non visibile in home assistant
+    output: led                     
+ 
