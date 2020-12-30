@@ -2,13 +2,13 @@ binary_sensor:  # (boolean)
   - platform: template
     sensors:
       tag_wiegand_portone_seve_0:  
-        value_template: '{{ states.sensor.uart_text_sensor.state | float== 1630278 }}'
+        value_template: '{{ states.sensor.uart_text_sensor_wemos_portone.state | float== 1630278 }}'
       tag_wiegand_portone_seve_1: 
-        value_template: '{{ states.sensor.uart_text_sensor.state | float== 7397182 }}'  
+        value_template: '{{ states.sensor.uart_text_sensor_wemos_portone.state | float== 7397182 }}'  
       tag_wiegand_portone_seve_2: 
-        value_template: '{{ states.sensor.uart_text_sensor.state | float== 8265059 }}'  
+        value_template: '{{ states.sensor.uart_text_sensor_wemos_portone.state | float== 8265059 }}'  
       tag_wiegand_portone_seve_3:
-        value_template: '{{ states.sensor.uart_text_sensor.state | float== 5212321 }}'
+        value_template: '{{ states.sensor.uart_text_sensor_wemos_portone.state | float== 5212321 }}'
         
 automation:
   - alias: 'Wemos portone Seve'
