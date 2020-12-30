@@ -7,11 +7,11 @@ Use this yaml code to create your ESPHome firmware: [wemos_d1_wiegand_ingresso.y
 
 Remember to put this file in your esphome folder:  [UartReadLineStateComponent.h](https://github.com/Gio-dot/Esphome-Wiegand-reader/blob/main/UartReadLineStateComponent.h).
 
-THis is resultant integration in Homeassistant:
+Resultant integration in Homeassistant:
 
 <img src="https://github.com/Gio-dot/Esphome-Wiegand-reader/blob/main/img/2020-12-30%2018_58_18-Panoramica%20-%20Home%20Assistant.png" width="350">
 
-This is the Homeassistant basic configuration: [home_assistant_wiegand](https://github.com/Gio-dot/Esphome-Wiegand-reader/blob/main/home_assistant_wiegand.yaml)
+Homeassistant basic configuration: [home_assistant_wiegand](https://github.com/Gio-dot/Esphome-Wiegand-reader/blob/main/home_assistant_wiegand.yaml)
 
 ## How it works
 
