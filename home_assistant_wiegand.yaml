@@ -1,0 +1,31 @@
+binary_sensor:  # (boolean) 
+  - platform: template
+    sensors:
+      tag_wiegand_portone_seve_0:  
+        value_template: '{{ states.sensor.uart_text_sensor.state | float== 1630278 }}'
+      tag_wiegand_portone_seve_1: 
+        value_template: '{{ states.sensor.uart_text_sensor.state | float== 7397182 }}'  
+      tag_wiegand_portone_seve_2: 
+        value_template: '{{ states.sensor.uart_text_sensor.state | float== 8265059 }}'  
+      tag_wiegand_portone_seve_3:
+        value_template: '{{ states.sensor.uart_text_sensor.state | float== 5212321 }}'
+        
+automation:
+  - alias: 'Wemos portone Seve'
+    trigger:
+      - platform: state
+        entity_id: 
+          - binary_sensor.tag_wiegand_portone_seve_0
+          - binary_sensor.tag_wiegand_portone_seve_1
+          - binary_sensor.tag_wiegand_portone_seve_2
+          - binary_sensor.tag_wiegand_portone_seve_3
+        to: 'on'   
+    action:
+      - service: switch.turn_on # long beep on wiegand reader
+        entity_id: switch.portone_seve_wiegand_long_beep
+      - service: switch.turn_on # unlock the door
+        entity_id: switch.portone_seve
+      - service: alarm_control_panel.alarm_disarm
+        entity_id: alarm_control_panel.allarme_seve
+      - service: switch.turn_off # wiegand led off (led off= green, if on led is red: turn on when alarm is armed)
+        entity_id: switch.portone_seve_wiegand_led  
